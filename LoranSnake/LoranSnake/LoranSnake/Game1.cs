@@ -16,6 +16,9 @@ namespace LoranSnake
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+
+        //now where whenever the head touches a pellet, add another segment
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -57,7 +60,7 @@ namespace LoranSnake
             spriteBatch = new SpriteBatch(GraphicsDevice);
             // TODO: use this.Content to load your game content here
 
-            pellet = new Pellet(Content.Load<Texture2D>("loranpellet"), new Vector2(40, 40), Color.White);
+            pellet = new Pellet(Content.Load<Texture2D>("loranpellet"), new Vector2(250, 50), Color.White);
             centerOfScreen = new Vector2(Screen.Width / 2, Screen.Height / 2);
 
             Head = new Segment(Content.Load<Texture2D>("loransnakesegment"), new Vector2(centerOfScreen.X - 20, centerOfScreen.Y - 20), Color.White);
@@ -85,10 +88,10 @@ namespace LoranSnake
             // TODO: Add your update logic here
             KeyboardState ks = Keyboard.GetState();
 
-           // randGenerator = 
+            randGenerator = new Random();
 
-            pellet.Spawn(Screen, pellet);
-
+            pellet.Spawn(Screen, Head, randGenerator.Next(Screen.X + 15, Screen.Width - 15), randGenerator.Next(Screen.Y + 15, Screen.Height - 15));
+            
             Head.Movement(3, Screen, ks, Keys.Up, Keys.Down, Keys.Left, Keys.Right);
 
             base.Update(gameTime);
@@ -102,8 +105,11 @@ namespace LoranSnake
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
+            
 
             Head.Draw(spriteBatch);
+
+            pellet.Draw(spriteBatch);
 
 
             spriteBatch.End();

@@ -13,32 +13,39 @@ namespace LoranSnake
         Texture2D Texture;
         Color Tint;
         Vector2 Position;
+        Rectangle Hitbox;
         
-        // make one pellet, when it's hitbox touches the snake heads, teleport it out of the screen, then teleport it to a random place on the screen, that isn't where the snake is
+       
         
         public Pellet (Texture2D texture, Vector2 position, Color tint)
         {
             Texture = texture;
             Tint = tint;
             Position = position;
+            Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
         }
         
         
-        public void Spawn (Viewport screen, Pellet pel)
-        {        
-            if (pel.Position.X < 0 || pel.Position.Y < 0 || pel.Position.X + pel.Texture.Width > screen.Width || pel.Position.Y + pel.Texture.Height > screen.Height) //if off the screen (change when you know WHERE the pellet is going to go off the screen)
-            {
+        public void Spawn (Viewport screen, Segment head, int randomx, int randomy)
+        {
 
+            if (Hitbox.Intersects(head.Hitbox))
+            {
+                Position.X = randomx;
+                Position.Y = randomy;
+                //add another segment behind the head, maybe with a slower reaction speed to keyboard inputs, so not all of the segments (with the head) go in one direction (i.e. they follow one another sideways, but when you press up, they all do the same thing, like a line)
             }
-            
-                
-                //if there's less than one pellet on the screen, spawn another at a random x and y
+            Hitbox.X = (int)Position.X;
+            Hitbox.Y = (int)Position.Y;
             
         }
         
         
         
-         
+         public void Draw (SpriteBatch spritebatch)
+         {
+            spritebatch.Draw(Texture, Position, Tint);
+         }
 
 
     }

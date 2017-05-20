@@ -14,6 +14,7 @@ namespace LoranSnake
         public Texture2D Texture;
         public Vector2 Position;
         public Color Tint;
+        public Rectangle Hitbox;
         
         Vector2 speedPHolder = new Vector2(-3, 0);   // just a beginning speed/direction
         
@@ -22,13 +23,14 @@ namespace LoranSnake
             Texture = texture;
             Position = position;
             Tint = tint;
+            Hitbox = new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
         }
 
 
 
         public void Movement(int xYSpeed, Viewport screen, KeyboardState ks, Keys up, Keys down, Keys left, Keys right)
         {
-            
+
             //if inside the edges of the screen
             if (Position.X > screen.X && Position.X + Texture.Width < screen.Width && Position.Y > screen.Y && Position.Y + Texture.Width < screen.Height)
             { //         left         |                     right                  |           top          |                      bot           
@@ -54,16 +56,9 @@ namespace LoranSnake
                     speedPHolder.Y = 0;
                 }
                 Position += speedPHolder;
+                Hitbox.X = (int)Position.X;
+                Hitbox.Y = (int)Position.Y;
             }
-        }
-
-        public void Collect(Pellet pellet)
-        {
-            
-            Rectangle headHitbox = new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
-            Rectangle pellethitbox = new Rectangle();
-
-
         }
         
         public void Draw(SpriteBatch spritebatch)
